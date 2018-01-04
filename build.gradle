@@ -239,6 +239,13 @@ subprojects {
         }
     }
 
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
     checkstyle {
         configFile new File(rootDir, "style/checkstyle-rules.xml")
         configProperties = ["checkstyle.suppressions.file": new File(rootDir, "style/checkstyle-suppressions.xml")]
@@ -306,6 +313,8 @@ subprojects {
             findbugsPlugins libraries.findbugscontrib
             findbugsPlugins libraries.findbugssec
         }
+        compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
+        compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
         testImplementation libraries.tests
     }
 }
