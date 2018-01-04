@@ -115,6 +115,7 @@ subprojects {
         doLast {}
     }
     apply plugin: "kotlin"
+    apply plugin: "kotlin-spring"
     apply plugin: "java-library"
     if (!Boolean.getBoolean("skipErrorProneCompiler")) {
         apply plugin: "net.ltgt.errorprone"
