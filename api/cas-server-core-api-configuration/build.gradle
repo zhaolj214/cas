@@ -1,5 +1,7 @@
 description = "Apereo CAS Core Configuration"
 
+apply plugin: 'kotlin-kapt'
+
 dependencies {
     implementation libraries.springsecurity
     implementation libraries.mongo
@@ -8,7 +10,10 @@ dependencies {
     implementation libraries.bouncycastle
 
     optional libraries.springbootconfigmetadata
-    
+
+    //For Kotlin
+    kapt libraries.springbootconfigmetadata
+
     api project(":api:cas-server-core-api-util")
     api project(":api:cas-server-core-api-authentication")
     api project(":api:cas-server-core-api-webflow")
@@ -31,4 +36,3 @@ compileJava.dependsOn(processResources)
 if (!Boolean.getBoolean("skipNestedConfigMetadataGen")) {
     jar.dependsOn(generateConfigurationMetadata)
 }
-
