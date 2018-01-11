@@ -68,4 +68,3 @@ class AzureMultifactorProperties : BaseMultifactorProviderProperties() {
         private val serialVersionUID = 6726032660671158922L
     }
 }
-

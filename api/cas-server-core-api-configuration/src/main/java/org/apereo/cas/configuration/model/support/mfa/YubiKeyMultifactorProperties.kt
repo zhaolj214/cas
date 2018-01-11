@@ -84,4 +84,3 @@ class YubiKeyMultifactorProperties : BaseMultifactorProviderProperties() {
         private val serialVersionUID = 9138057706201201089L
     }
 }
-

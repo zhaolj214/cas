@@ -67,4 +67,3 @@ class AuthyMultifactorProperties : BaseMultifactorProviderProperties() {
         private val serialVersionUID = -3746749663459157641L
     }
 }
-

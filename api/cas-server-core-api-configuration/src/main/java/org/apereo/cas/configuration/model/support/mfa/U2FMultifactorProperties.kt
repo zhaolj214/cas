@@ -120,4 +120,3 @@ class U2FMultifactorProperties : BaseMultifactorProviderProperties() {
         private val serialVersionUID = 6151350313777066398L
     }
 }
-

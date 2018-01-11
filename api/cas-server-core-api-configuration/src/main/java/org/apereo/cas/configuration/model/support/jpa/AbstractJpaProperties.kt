@@ -4,8 +4,9 @@ import org.apache.commons.lang3.StringUtils
 import org.apereo.cas.configuration.model.support.ConnectionPoolingProperties
 import org.apereo.cas.configuration.support.Beans
 import org.apereo.cas.configuration.support.RequiredProperty
+
 import java.io.Serializable
-import java.util.*
+import java.util.HashMap
 
 /**
  * Common properties for all jpa configs.
