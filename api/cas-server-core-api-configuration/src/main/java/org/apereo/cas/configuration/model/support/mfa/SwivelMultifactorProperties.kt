@@ -1,7 +1,7 @@
 package org.apereo.cas.configuration.model.support.mfa
 
-import org.apereo.cas.configuration.support.RequiresModule
 import org.apereo.cas.configuration.support.RequiredProperty
+import org.apereo.cas.configuration.support.RequiresModule
 
 /**
  * This is [SwivelMultifactorProperties].
@@ -40,7 +40,7 @@ class SwivelMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-swivel"
+        const val DEFAULT_IDENTIFIER = "mfa-swivel"
 
         private val serialVersionUID = -7409451053833491119L
     }

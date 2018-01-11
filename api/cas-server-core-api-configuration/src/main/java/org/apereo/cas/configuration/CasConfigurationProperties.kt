@@ -312,8 +312,8 @@ class CasConfigurationProperties : Serializable {
         /**
          * Prefix used for all CAS-specific settings.
          */
-        val PREFIX = "cas"
+        const val PREFIX = "cas"
 
-        private const val serialVersionUID = -8620267783496071683L
+        val serialVersionUID = -8620267783496071683L
     }
 }

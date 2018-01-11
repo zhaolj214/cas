@@ -4,9 +4,8 @@ import org.apache.commons.lang3.StringUtils
 import org.apereo.cas.configuration.model.support.ConnectionPoolingProperties
 import org.apereo.cas.configuration.support.Beans
 import org.apereo.cas.configuration.support.RequiredProperty
-
 import java.io.Serializable
-import java.util.HashMap
+import java.util.*
 
 /**
  * Common properties for all jpa configs.
@@ -32,13 +31,13 @@ abstract class AbstractJpaProperties : Serializable {
      * The JDBC driver used to connect to the database.
      */
     @RequiredProperty
-    var driverClass = "org.hsqldb.jdbcDriver"
+    open var driverClass = "org.hsqldb.jdbcDriver"
 
     /**
      * The database connection URL.
      */
     @RequiredProperty
-    var url = "jdbc:hsqldb:mem:cas-hsql-database"
+    open var url = "jdbc:hsqldb:mem:cas-hsql-database"
 
     /**
      * The database user.
@@ -47,13 +46,13 @@ abstract class AbstractJpaProperties : Serializable {
      * schema changes and updates, when needed.
      */
     @RequiredProperty
-    var user = "sa"
+    open var user = "sa"
 
     /**
      * The database connection password.
      */
     @RequiredProperty
-    var password = StringUtils.EMPTY
+    open var password = StringUtils.EMPTY
 
     /**
      * Qualifies unqualified table names with the given catalog in generated SQL.

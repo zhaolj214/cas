@@ -191,6 +191,8 @@ subprojects {
         exclude(group: "ch.qos.logback", module: "logback-classic")
         exclude(group: "cglib", module: "cglib")
         exclude(group: "cglib", module: "cglib-full")
+
+        exclude(group: "com.vaadin.external.google", module: "android-json")
     }
 
     artifacts {

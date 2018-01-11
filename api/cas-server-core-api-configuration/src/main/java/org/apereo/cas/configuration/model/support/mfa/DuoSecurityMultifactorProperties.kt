@@ -1,7 +1,7 @@
 package org.apereo.cas.configuration.model.support.mfa
 
-import org.apereo.cas.configuration.support.RequiresModule
 import org.apereo.cas.configuration.support.RequiredProperty
+import org.apereo.cas.configuration.support.RequiresModule
 
 /**
  * This is [DuoSecurityMultifactorProperties].
@@ -61,7 +61,7 @@ class DuoSecurityMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-duo"
+        const val DEFAULT_IDENTIFIER = "mfa-duo"
 
         private val serialVersionUID = -4655375354167880807L
     }

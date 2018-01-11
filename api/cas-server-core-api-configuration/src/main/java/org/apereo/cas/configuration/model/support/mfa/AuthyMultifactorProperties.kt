@@ -1,7 +1,7 @@
 package org.apereo.cas.configuration.model.support.mfa
 
-import org.apereo.cas.configuration.support.RequiresModule
 import org.apereo.cas.configuration.support.RequiredProperty
+import org.apereo.cas.configuration.support.RequiresModule
 
 /**
  * This is [AuthyMultifactorProperties].
@@ -62,7 +62,7 @@ class AuthyMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-authy"
+        const val DEFAULT_IDENTIFIER = "mfa-authy"
 
         private val serialVersionUID = -3746749663459157641L
     }

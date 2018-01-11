@@ -50,7 +50,7 @@ class RadiusMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-radius"
+        const val DEFAULT_IDENTIFIER = "mfa-radius"
 
         private val serialVersionUID = 7021301814775348087L
     }

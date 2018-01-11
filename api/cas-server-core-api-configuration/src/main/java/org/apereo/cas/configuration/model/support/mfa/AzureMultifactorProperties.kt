@@ -1,7 +1,7 @@
 package org.apereo.cas.configuration.model.support.mfa
 
-import org.apereo.cas.configuration.support.RequiresModule
 import org.apereo.cas.configuration.support.RequiredProperty
+import org.apereo.cas.configuration.support.RequiresModule
 
 /**
  * This is [AzureMultifactorProperties].
@@ -63,7 +63,7 @@ class AzureMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-azure"
+        const val DEFAULT_IDENTIFIER = "mfa-azure"
 
         private val serialVersionUID = 6726032660671158922L
     }

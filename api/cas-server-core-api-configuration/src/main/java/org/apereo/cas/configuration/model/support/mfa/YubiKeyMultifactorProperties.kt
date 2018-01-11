@@ -3,11 +3,10 @@ package org.apereo.cas.configuration.model.support.mfa
 import org.apache.commons.lang3.StringUtils
 import org.apereo.cas.configuration.model.support.jpa.AbstractJpaProperties
 import org.apereo.cas.configuration.model.support.mongo.SingleCollectionMongoDbProperties
-import org.apereo.cas.configuration.support.RequiresModule
 import org.apereo.cas.configuration.support.RequiredProperty
+import org.apereo.cas.configuration.support.RequiresModule
 import org.springframework.core.io.Resource
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * This is [YubiKeyMultifactorProperties].
@@ -80,7 +79,7 @@ class YubiKeyMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-yubikey"
+        const val DEFAULT_IDENTIFIER = "mfa-yubikey"
 
         private val serialVersionUID = 9138057706201201089L
     }

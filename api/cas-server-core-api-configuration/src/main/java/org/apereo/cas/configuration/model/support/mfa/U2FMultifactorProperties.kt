@@ -115,7 +115,7 @@ class U2FMultifactorProperties : BaseMultifactorProviderProperties() {
         /**
          * Provider id by default.
          */
-        val DEFAULT_IDENTIFIER = "mfa-u2f"
+        const val DEFAULT_IDENTIFIER = "mfa-u2f"
 
         private val serialVersionUID = 6151350313777066398L
     }
