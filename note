@@ -1,0 +1,207 @@
+
+## 特点 ##
+- C/S架构的HttpSession支持，使用GemFire构建。  
+- 分布式session容器，替代servlet容器（如tomcat）的session管理方式。
+- 支持第三方仓储来实现session集群管理。Spring-Session提供了redis，mongodb，jdbc方式进行session存储的管理方式，redis结合AOP技术实现非侵入式编程。
+- 可以扩展和实现Cookie以及和Session相关的Listener，Filter接口。
+- 集成Spring Security，提供findSessionsByUserName，rememberMe等功能，限制同一个账号可以同时在线的Session数（如设置成1，以实现同时只允许一个账号登录）。
+- 支持单一浏览器中使用多个session（类似Google的多认证账号机制）。
+
+## 项目支持 ##
+### 添加Manven依赖 ###
+
+```
+<dependency>    
+    <groupId>org.springframework.boot</groupId>    
+    <artifactId>spring-boot-starter-parent</artifactId>    
+    <version>1.5.10.RELEASE</version>  
+    <type>pom</type>  
+    <scope>import</scope>  
+</dependency>  
+<dependency>  
+    <groupId>org.springframework.boot</groupId>  
+    <artifactId>spring-boot-starter-data-redis</artifactId>    
+</dependency>  
+<dependency>  
+    <groupId>org.springframework.session</groupId>  
+    <artifactId>spring-session</artifactId>  
+</dependency>  
+```
+或
+```
+<dependency>  
+    <groupId>org.springframework.boot</groupId>  
+    <artifactId>spring-boot-starter-parent</artifactId>  
+    <version>1.5.10.RELEASE</version>  
+    <type>pom</type>  
+    <scope>import</scope>  
+</dependency>  
+<dependency>  
+    <groupId>org.springframework.boot</groupId>  
+    <artifactId>spring-data-redis</artifactId>  
+</dependency>  
+<dependency>  
+    <groupId>org.springframework.session</groupId>  
+    <artifactId>spring-session</artifactId>  
+</dependency>
+```
+
+**application.properties配置**
+>
+    spring.redis.host = 192.168.100.188  
+    spring.redis.port = 6379  
+    spring.redis.database = 6  
+    spring.redis.timeout = 10000  
+
+1.java base配置方式
+
+```
+@Configuration    
+@EnableRedisHttpSession     
+public class SessionRedisConfig {    
+    // some...  
+}
+```
+
+2.Spring XML配置方式  
+spring-session.xml  
+
+```
+<context:annotation-config/>
+<bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+<bean class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory"/>
+```
+
+web.xml
+  
+```  
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+        /WEB-INF/spring/*.xml
+    </param-value>
+</context-param>
+<listener>
+    <listener-class>
+        org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+</listener>
+
+<filter>
+    <filter-name>springSessionRepositoryFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>springSessionRepositoryFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+</filter-mapping>
+```
+
+如果使用xml可以使用如下注解  
+```
+@Configuration   
+@ImportResource("spring-session.xml")  
+```
+## SessionRepository使用示范
+
+- 方法   
+com.hongtu.tms.common.session.SessionRepository      session接口规范  
+com.hongtu.tms.common.session.GsonSessionRepository  Gson的session内容序列化反序列化实现
+- 使用  
+1）添加引用
+```
+@Autowired  
+@Qualifier("gsonSessionRepository")  
+private SessionRepository sessionRepo;  
+```
+
+2）
+调用put或get方法从redis中获取共享的数据  
+
+1.组合数据
+```
+    static {
+        Map<String, List<? extends Object>> map = new LinkedHashMap<String, List<? extends Object>>();
+        User user1 = new User(1, "mike", new Date());
+        User user2 = new User(2, "lily", new Date());
+        User user3 = new User(3, "tom", new Date());
+        List<User> userList = new ArrayList<User>();
+        userList.add(user1);
+        userList.add(user2);
+        userList.add(user3);
+        Role role1 = new Role(1001, "admin", "admin");
+        Role role2 = new Role(1002, "manager", "guest");
+        List<Role> roleList = new ArrayList<Role>();
+        roleList.add(role1);
+        roleList.add(role2); 
+
+        map.put("users", userList);
+        map.put("roles", roleList);
+    }
+```
+
+2.存储数据
+```
+// put String -> String
+session.put("session-string", "session-string");
+
+// put String -> Object
+User user = new User(100, "object", new Date());
+session.put("session-object", user);
+
+// put String -> List<T>
+List<User> userList = new ArrayList<User>(3);
+userList.add(new User(1, "user1", new Date()));
+userList.add(new User(2, "user2", new Date()));
+userList.add(new User(3, "user3", new Date()));
+session.put("session-list", userList);
+
+// put String -> Map<String, List<? extends Object>>
+session.put("session-map", map);
+```
+
+
+3.解析数据
+```
+    // get string -> string
+    String str = session.get("session-string");
+  
+    // get string -> Class<?>
+    User user = session.get("session-object", User.class);
+    System.out.println("object => "+ u.getId() + ", " + u.getName() + ", " + u.getBirthday());
+
+    // get string -> list
+    Type listType = new TypeToken<List<User>>() {}.getType();
+    List<User> users = session.get("session-list", listType);
+    users.forEach(u -> {
+        System.out.println("items => "+ u.getId() + ", " + u.getName() + ", " + u.getBirthday());
+    });
+   
+    // string -> Map<String, List<? extends Object>>
+    Type outerType = new TypeToken<Map<String, List<? extends Object>>>() {}.getType();
+    Type user = new TypeToken<User>() {}.getType();
+    Type role = new TypeToken<Role>() {}.getType();
+    Map<String, Type> itemsType = new HashMap<String, Type>();
+    itemsType.put("users", user);
+    itemsType.put("roles", role);
+        
+    Map<String, List<Object>> retMap = session.get("session-map", outerType, itemsType);
+    // traversing the data content
+    retMap.forEach((k, v) -> {  
+        List<? extends Object> items = (List<? extends Object>) retMap.get(k);
+            items.forEach(item -> {
+                if(item instanceof User) {
+                    System.out.println(((User) item).getId() + " -- " + ((User) item).getName());
+                }
+                if(item instanceof Role) {
+                    System.out.println(((Role) item).getId() + " -- " + ((Role) item).getName());
+                }
+            });
+    });
+```
+
+参考：   
+1. https://docs.spring.io/spring-session/docs/1.3.2.BUILD-SNAPSHOT/reference/html5/
+2. https://github.com/google/gson
